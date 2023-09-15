@@ -1,16 +1,40 @@
-# This is a sample Python script.
+from binance.spot import Spot as Client
+import pandas
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+symbol = "BTCUSDT"
+timeframe = "15m"
+number_of_candles = 200
 
+# Psuedocode
+# 1. Set the query timeframe so it is consistent with the timeframe used for other exchanges
+# 2. Ensure that no more than 1000 candles retrieved (hard limit from Binance)
+# 3. Retrieve the candles
+# 4. Format the candles into a dataframe, and label columns accordingly
+# 5. Return the dataframe
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# Step 1: Convert the timeframe into a Binance friendly format
+# timeframe = set_query_timeframe(timeframe=timeframe)
+# Step 2: Make sure that no more than 1000 candles are being retrieved as this is a hard limit from Binance
+if number_of_candles > 1000:
+    raise ValueError("Number of candles cannot be greater than 1000")
+# Step 3: Retrieve the candles
+# Instantiate the Spot Client
+spot_client = Client()  # <- No API keys needed for this request
+# Retrieve the candles / OHLC data
+candles = spot_client.klines(
+    symbol=symbol,
+    interval=timeframe,
+    limit=number_of_candles
+)
+# Convert to a dataframe
+candles_dataframe = pandas.DataFrame(candles)
+# Step 4: Format the columns of the Dataframe.
+# Documentation: https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#klinecandlestick-data
+candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time", "Quote Asset Volume",
+                             "Number of Trades", "Taker Buy Base Asset Volume", "Taker Buy Quote Asset Volume",
+                             "Ignore"]
+# Add a human time column which is based on a DateTime fo the 'time' column
+candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
+# Make sure that the "open", "high", "low", "close", "volume" columns are floats
+candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
+    ["open", "high", "low", "close", "volume"]].astype(float)
