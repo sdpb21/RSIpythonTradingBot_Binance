@@ -38,3 +38,6 @@ candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], 
 # Make sure that the "open", "high", "low", "close", "volume" columns are floats
 candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
     ["open", "high", "low", "close", "volume"]].astype(float)
+# to show all columns when printing to screen:
+pandas.set_option('display.max_columns', None)
+print(candles_dataframe)
