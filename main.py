@@ -1,3 +1,4 @@
+import time
 from binance.spot import Spot as Client
 import pandas
 import talib
@@ -43,5 +44,10 @@ candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_datafram
 # to show all columns when printing to screen:
 pandas.set_option('display.max_columns', None)
 
-candles_dataframe['rsi'] = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size)
-print(candles_dataframe)
+# candles_dataframe['rsi'] = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size)
+# print(candles_dataframe)
+
+while True:
+    rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
+    print(rsi)
+    time.sleep(1.0)
