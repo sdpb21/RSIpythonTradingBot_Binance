@@ -9,7 +9,7 @@ number_of_candles = 200
 rsi_size = 2
 
 # Psuedocode
-# 1. Set the query timeframe so it is consistent with the timeframe used for other exchanges
+# 1. Set the query timeframe, so it is consistent with the timeframe used for other exchanges
 # 2. Ensure that no more than 1000 candles retrieved (hard limit from Binance)
 # 3. Retrieve the candles
 # 4. Format the candles into a dataframe, and label columns accordingly
@@ -48,6 +48,14 @@ pandas.set_option('display.max_columns', None)
 # print(candles_dataframe)
 
 while True:
+    candles_dataframe = pandas.DataFrame(candles)
+    candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time", "Quote Asset Volume",
+                                 "Number of Trades", "Taker Buy Base Asset Volume", "Taker Buy Quote Asset Volume",
+                                 "Ignore"]
+    candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
+    candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
+        ["open", "high", "low", "close", "volume"]].astype(float)
+
     rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
     print(rsi)
     time.sleep(1.0)
