@@ -1,5 +1,6 @@
 from binance.spot import Spot as Client
 import pandas
+import talib
 
 symbol = "BTCUSDT"
 timeframe = "15m"
