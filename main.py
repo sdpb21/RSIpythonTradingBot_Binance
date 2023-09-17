@@ -13,7 +13,6 @@ rsi_size = 2
 # 2. Ensure that no more than 1000 candles retrieved (hard limit from Binance)
 # 3. Retrieve the candles
 # 4. Format the candles into a dataframe, and label columns accordingly
-# 5. Return the dataframe
 
 # Step 1: Convert the timeframe into a Binance friendly format
 # timeframe = set_query_timeframe(timeframe=timeframe)
@@ -47,21 +46,21 @@ pandas.set_option('display.max_columns', None)
 # candles_dataframe['rsi'] = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size)
 # print(candles_dataframe)
 
-while True:
-    candles = spot_client.klines(
-        symbol=symbol,
-        interval=timeframe,
-        limit=number_of_candles
-    )
-
-    candles_dataframe = pandas.DataFrame(candles)
-    candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time", "Quote Asset Volume",
-                                 "Number of Trades", "Taker Buy Base Asset Volume", "Taker Buy Quote Asset Volume",
-                                 "Ignore"]
-    candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
-    candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
-        ["open", "high", "low", "close", "volume"]].astype(float)
-
-    rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
-    print(rsi)
-    time.sleep(1.0)
+# while True:
+#     candles = spot_client.klines(
+#         symbol=symbol,
+#         interval=timeframe,
+#         limit=number_of_candles
+#     )
+#
+#     candles_dataframe = pandas.DataFrame(candles)
+#     candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time", "Quote Asset Volume",
+#                                  "Number of Trades", "Taker Buy Base Asset Volume", "Taker Buy Quote Asset Volume",
+#                                  "Ignore"]
+#     candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
+#     candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
+#         ["open", "high", "low", "close", "volume"]].astype(float)
+#
+#     rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
+#     print(rsi)
+#     time.sleep(1.0)
