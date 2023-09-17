@@ -48,6 +48,8 @@ pandas.set_option('display.max_columns', None)
 # print(candles_dataframe)
 
 ema_name = "ema_" + str(ema_size)
+candles_dataframe[ema_name] = talib.EMA(candles_dataframe['close'], timeperiod=ema_size)
+print(candles_dataframe)
 
 # while True:
 #     candles = spot_client.klines(
