@@ -48,6 +48,12 @@ pandas.set_option('display.max_columns', None)
 # print(candles_dataframe)
 
 while True:
+    candles = spot_client.klines(
+        symbol=symbol,
+        interval=timeframe,
+        limit=number_of_candles
+    )
+
     candles_dataframe = pandas.DataFrame(candles)
     candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time", "Quote Asset Volume",
                                  "Number of Trades", "Taker Buy Base Asset Volume", "Taker Buy Quote Asset Volume",
