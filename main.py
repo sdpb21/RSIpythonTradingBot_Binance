@@ -3,7 +3,7 @@ from binance.spot import Spot as Client
 import pandas
 import talib
 
-symbol = "BTCUSDT"
+symbol = "BTCFDUSD"
 timeframe = "15m"
 number_of_candles = 200
 rsi_size = 2
@@ -23,24 +23,7 @@ if number_of_candles > 1000:
 # Step 3: Retrieve the candles
 # Instantiate the Spot Client
 spot_client = Client()  # <- No API keys needed for this request
-# Retrieve the candles / OHLC data
-candles = spot_client.klines(
-    symbol=symbol,
-    interval=timeframe,
-    limit=number_of_candles
-)
-# Convert to a dataframe
-candles_dataframe = pandas.DataFrame(candles)
-# Step 4: Format the columns of the Dataframe.
-# Documentation: https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#klinecandlestick-data
-candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time", "Quote Asset Volume",
-                             "Number of Trades", "Taker Buy Base Asset Volume", "Taker Buy Quote Asset Volume",
-                             "Ignore"]
-# Add a human time column which is based on a DateTime fo the 'time' column
-candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
-# Make sure that the "open", "high", "low", "close", "volume" columns are floats
-candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
-    ["open", "high", "low", "close", "volume"]].astype(float)
+
 # to show all columns when printing to screen:
 pandas.set_option('display.max_columns', None)
 
@@ -48,24 +31,32 @@ pandas.set_option('display.max_columns', None)
 # print(candles_dataframe)
 
 ema_name = "ema_" + str(ema_size)
-candles_dataframe[ema_name] = talib.EMA(candles_dataframe['close'], timeperiod=ema_size)
-print(candles_dataframe)
+# candles_dataframe[ema_name] = talib.EMA(candles_dataframe['close'], timeperiod=ema_size)
+# print(candles_dataframe)
 
-# while True:
-#     candles = spot_client.klines(
-#         symbol=symbol,
-#         interval=timeframe,
-#         limit=number_of_candles
-#     )
-#
-#     candles_dataframe = pandas.DataFrame(candles)
-#     candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time", "Quote Asset Volume",
-#                                  "Number of Trades", "Taker Buy Base Asset Volume", "Taker Buy Quote Asset Volume",
-#                                  "Ignore"]
-#     candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
-#     candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
-#         ["open", "high", "low", "close", "volume"]].astype(float)
-#
-#     rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
-#     print(rsi)
-#     time.sleep(1.0)
+while True:
+    # Retrieve the candles / OHLC data
+    candles = spot_client.klines(
+        symbol=symbol,
+        interval=timeframe,
+        limit=number_of_candles
+    )
+    # Convert to a dataframe
+    candles_dataframe = pandas.DataFrame(candles)
+    # Step 4: Format the columns of the Dataframe.
+    # Documentation: https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#klinecandlestick-data
+    candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time", "Quote Asset Volume",
+                                 "Number of Trades", "Taker Buy Base Asset Volume", "Taker Buy Quote Asset Volume",
+                                 "Ignore"]
+    # Add a human time column which is based on a DateTime fo the 'time' column
+    candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
+    # Make sure that the "open", "high", "low", "close", "volume" columns are floats
+    candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
+        ["open", "high", "low", "close", "volume"]].astype(float)
+
+    # rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
+    # print(rsi)
+
+    ema = talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1]
+    print(ema)
+    time.sleep(1.0)
