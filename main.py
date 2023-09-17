@@ -7,6 +7,7 @@ symbol = "BTCUSDT"
 timeframe = "15m"
 number_of_candles = 200
 rsi_size = 2
+ema_size = 7
 
 # Psuedocode
 # 1. Set the query timeframe, so it is consistent with the timeframe used for other exchanges
@@ -45,6 +46,8 @@ pandas.set_option('display.max_columns', None)
 
 # candles_dataframe['rsi'] = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size)
 # print(candles_dataframe)
+
+ema_name = "ema_" + str(ema_size)
 
 # while True:
 #     candles = spot_client.klines(
