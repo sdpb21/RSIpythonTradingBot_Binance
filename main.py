@@ -6,7 +6,7 @@ import pandas
 import talib
 
 symbol = "BTCFDUSD"
-timeframe = "15m"
+timeframe = "1m"
 number_of_candles = 200
 rsi_size = 2
 ema_size = 7
