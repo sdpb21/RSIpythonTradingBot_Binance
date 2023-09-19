@@ -1,4 +1,6 @@
 import time
+
+import playsound
 from binance.spot import Spot as Client
 import pandas
 import talib
@@ -54,10 +56,16 @@ while True:
     candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
         ["open", "high", "low", "close", "volume"]].astype(float)
 
-    # rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
-    # print(rsi)
+    rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
+    print(rsi)
+    if rsi <= 1:
+        price = float(spot_client.ticker_price(symbol).get('price'))
+        print("buy price:", price)
+        while True:
+            playsound("/home/asdf/Downloads/beep-04.wav")
+            time.sleep(1.0)
 
-    ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
-    ema2 = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size2).iloc[-1])
-    print("ema_", ema_size, ema, " ema_", ema_size2, ema2)
-    time.sleep(1.0)
+    # ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
+    # ema2 = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size2).iloc[-1])
+    # print("ema_", ema_size, ema, " ema_", ema_size2, ema2)
+    # time.sleep(1.0)
