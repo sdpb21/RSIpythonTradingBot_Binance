@@ -1,6 +1,6 @@
 import time
 
-import playsound
+from playsound import playsound
 from binance.spot import Spot as Client
 import pandas
 import talib
