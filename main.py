@@ -64,6 +64,7 @@ while True:
         while True:
             playsound("/home/asdf/Downloads/beep-04.wav")
             time.sleep(1.0)
+    time.sleep(1.0)
 
     # ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
     # ema2 = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size2).iloc[-1])
