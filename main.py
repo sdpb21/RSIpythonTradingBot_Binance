@@ -36,6 +36,7 @@ pandas.set_option('display.max_columns', None)
 # candles_dataframe[ema_name] = talib.EMA(candles_dataframe['close'], timeperiod=ema_size)
 # print(candles_dataframe)
 e = "None"
+buy = False
 while True:
 
     try:
@@ -61,12 +62,16 @@ while True:
 
         rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
         print(rsi, "Exception: ", e)
-        if rsi <= 1:
-            price = float(spot_client.ticker_price(symbol).get('price'))
-            print("buy price:", price)
-            while True:
-                playsound("/home/asdf/Downloads/beep-04.wav")
-                time.sleep(1.0)
+        if rsi <= 0.5:
+            buyPrice = float(spot_client.ticker_price(symbol).get('price'))
+            print("buy price:", buyPrice)
+            buy = True
+            # while True:
+            #     playsound("/home/asdf/Downloads/beep-04.wav")
+            #     time.sleep(1.0)
+        if buy:
+            print("bought at: ", buyPrice)
+            playsound("/home/asdf/Downloads/beep-04.wav")
         time.sleep(1.0)
 
     except Exception as e:
