@@ -1,3 +1,4 @@
+import datetime
 import time
 
 from playsound import playsound
@@ -61,7 +62,7 @@ while True:
             ["open", "high", "low", "close", "volume"]].astype(float)
 
         rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
-        print(rsi, "Exception: ", e)
+        print(rsi, "Exception: ", e, datetime.datetime.now())
         if rsi <= 0.5:
             buyPrice = float(spot_client.ticker_price(symbol).get('price'))
             print("buy price:", buyPrice)
@@ -72,6 +73,7 @@ while True:
         if buy:
             print("bought at: ", buyPrice)
             playsound("/home/asdf/Downloads/beep-04.wav")
+            break
         time.sleep(1.0)
 
     except Exception as e:
