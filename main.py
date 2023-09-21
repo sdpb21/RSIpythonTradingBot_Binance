@@ -7,7 +7,7 @@ import pandas
 import talib
 
 symbol = "BTCFDUSD"
-timeframe = "1m"
+timeframe = "15m"
 number_of_candles = 200
 rsi_size = 2
 ema_size = 7
@@ -63,7 +63,7 @@ while True:
 
         rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
         print(rsi, "Exception: ", e, datetime.datetime.now())
-        if rsi <= 0.5:
+        if rsi <= 0.1:
             buyPrice = float(spot_client.ticker_price(symbol).get('price'))
             print("buy price:", buyPrice)
             buy = True
