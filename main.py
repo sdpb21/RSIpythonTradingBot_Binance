@@ -7,7 +7,7 @@ import pandas
 import talib
 
 symbol = "BTCFDUSD"
-timeframe = "15m"
+timeframe = "1m"
 number_of_candles = 200
 rsi_size = 2
 ema_size = 7
@@ -37,6 +37,7 @@ pandas.set_option('display.max_columns', None)
 # candles_dataframe[ema_name] = talib.EMA(candles_dataframe['close'], timeperiod=ema_size)
 # print(candles_dataframe)
 buy = False
+
 while True:
 
     try:
@@ -46,12 +47,14 @@ while True:
             interval=timeframe,
             limit=number_of_candles
         )
+        print("candles = spot_client.klines(")
     except Exception as e:
         print(e)
 
     try:
         # Convert to a dataframe
         candles_dataframe = pandas.DataFrame(candles)
+        print("candles_dataframe = pandas.DataFrame(candles)")
     except Exception as e:
         print(e)
 
@@ -61,21 +64,28 @@ while True:
         candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
                                      "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
                                      "Taker Buy Quote Asset Volume", "Ignore"]
+        print("candles_dataframe.columns = [")
     except Exception as e:
         print(e)
 
     try:
         # Add a human time column which is based on a DateTime fo the 'time' column
         candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
+        print("candles_dataframe['human_time'] = pandas.t")
     except Exception as e:
         print(e)
 
-    # Make sure that the "open", "high", "low", "close", "volume" columns are floats
-    candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
-        ["open", "high", "low", "close", "volume"]].astype(float)
+    try:
+        # Make sure that the "open", "high", "low", "close", "volume" columns are floats
+        candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
+            ["open", "high", "low", "close", "volume"]].astype(float)
+        print('["open", "high", "low", "close", "volume"]].astype(float)')
+    except Exception as e:
+        print(e)
 
     try:
         rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
+        print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
     except Exception as e:
         print(e)
 
@@ -85,21 +95,27 @@ while True:
         print(e)
 
     try:
-        if rsi <= 0.1:
+        if rsi <= 0.1 and not buy:
             buyPrice = float(spot_client.ticker_price(symbol).get('price'))
             print("buy price:", buyPrice)
             buy = True
             # while True:
             #     playsound("/home/asdf/Downloads/beep-04.wav")
             #     time.sleep(1.0)
-        if buy:
-            print("bought at: ", buyPrice)
+        if buy and rsi >= 99.9:
+            priceNow = float(spot_client.ticker_price(symbol).get('price'))
+
+        if buy and rsi >= 99.9 and priceNow > buyPrice:
+            print("sell price:", priceNow)
+            buy = False
+            # print("bought at: ", buyPrice)
             playsound("/home/asdf/Downloads/beep-04.wav")
-            break
+            # break
     except Exception as e:
         print(e)
 
     try:
+        print("time.sleep(1.0)")
         time.sleep(1.0)
     except Exception as e:
         print(e)
