@@ -47,16 +47,16 @@ while True:
             interval=timeframe,
             limit=number_of_candles
         )
-        # print("candles = spot_client.klines(")
+        # print(candles)
     except Exception as e:
-        print(e)
+        print("exception 1:", e)
 
     try:
         # Convert to a dataframe
         candles_dataframe = pandas.DataFrame(candles)
-        # print("candles_dataframe = pandas.DataFrame(candles)")
+        # print(candles_dataframe)
     except Exception as e:
-        print(e)
+        print("Exception 2:", e)
 
     try:
         # Step 4: Format the columns of the Dataframe.
@@ -64,16 +64,16 @@ while True:
         candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
                                      "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
                                      "Taker Buy Quote Asset Volume", "Ignore"]
-        print("candles_dataframe.columns = [")
+        # print("candles_dataframe.columns = [")
     except Exception as e:
-        print(e)
+        print("Exception 3:", e)
 
     try:
         # Add a human time column which is based on a DateTime fo the 'time' column
         candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
         # print("candles_dataframe['human_time'] = pandas.t")
     except Exception as e:
-        print(e)
+        print("Exception 4:", e)
 
     try:
         # Make sure that the "open", "high", "low", "close", "volume" columns are floats
@@ -81,18 +81,18 @@ while True:
             ["open", "high", "low", "close", "volume"]].astype(float)
         # print('["open", "high", "low", "close", "volume"]].astype(float)')
     except Exception as e:
-        print(e)
+        print("Exception 5:", e)
 
     try:
         rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
         # print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
     except Exception as e:
-        print(e)
+        print("Exception 6:", e)
 
     try:
         print(rsi, datetime.datetime.now())
     except Exception as e:
-        print(e)
+        print("Exception 7:", e)
 
     try:
         if rsi <= 0.1 and not buy:
@@ -105,6 +105,7 @@ while True:
         if buy and rsi >= 99.9:
             priceNow = float(spot_client.ticker_price(symbol).get('price'))
 
+        # noinspection PyUnboundLocalVariable
         if buy and rsi >= 99.9 and priceNow > buyPrice:
             print("sell price:", priceNow)
             buy = False
@@ -112,13 +113,13 @@ while True:
             playsound("/home/asdf/Downloads/beep-04.wav")
             # break
     except Exception as e:
-        print(e)
+        print("Exception 8:", e)
 
     try:
         # print("time.sleep(1.0)")
         time.sleep(1.0)
     except Exception as e:
-        print(e)
+        print("Exception 9:", e)
 
     # ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
     # ema2 = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size2).iloc[-1])
