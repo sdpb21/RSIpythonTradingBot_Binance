@@ -47,14 +47,14 @@ while True:
             interval=timeframe,
             limit=number_of_candles
         )
-        print("candles = spot_client.klines(")
+        # print("candles = spot_client.klines(")
     except Exception as e:
         print(e)
 
     try:
         # Convert to a dataframe
         candles_dataframe = pandas.DataFrame(candles)
-        print("candles_dataframe = pandas.DataFrame(candles)")
+        # print("candles_dataframe = pandas.DataFrame(candles)")
     except Exception as e:
         print(e)
 
@@ -71,7 +71,7 @@ while True:
     try:
         # Add a human time column which is based on a DateTime fo the 'time' column
         candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
-        print("candles_dataframe['human_time'] = pandas.t")
+        # print("candles_dataframe['human_time'] = pandas.t")
     except Exception as e:
         print(e)
 
@@ -79,13 +79,13 @@ while True:
         # Make sure that the "open", "high", "low", "close", "volume" columns are floats
         candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
             ["open", "high", "low", "close", "volume"]].astype(float)
-        print('["open", "high", "low", "close", "volume"]].astype(float)')
+        # print('["open", "high", "low", "close", "volume"]].astype(float)')
     except Exception as e:
         print(e)
 
     try:
         rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
-        print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
+        # print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
     except Exception as e:
         print(e)
 
@@ -115,7 +115,7 @@ while True:
         print(e)
 
     try:
-        print("time.sleep(1.0)")
+        # print("time.sleep(1.0)")
         time.sleep(1.0)
     except Exception as e:
         print(e)
