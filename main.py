@@ -100,7 +100,7 @@ if __name__ == '__main__':
             except Exception as e:
                 print("Exception 7:", e)
 
-            if rsi <= 0.1 and not buy:
+            if rsi <= 10.0 and not buy:
                 try:
                     buyPrice = float(spot_client.ticker_price(symbol).get('price'))
                 except Exception as e:
@@ -110,7 +110,7 @@ if __name__ == '__main__':
                 # while True:
                 #     playsound("/home/asdf/Downloads/beep-04.wav")
                 #     time.sleep(1.0)
-            if buy and rsi >= 99.9:
+            if buy and rsi >= 90.0:
                 try:
                     priceNow = float(spot_client.ticker_price(symbol).get('price'))
                 except Exception as e:
