@@ -186,11 +186,13 @@ if __name__ == '__main__':
                 # print("time.sleep(1.0)")
                 count += 1
                 time.sleep(1.0)
-            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                print("Exception 9:", e)
+            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+            #     print("Exception 10:", e)
+            except:
+                print("exception 10")
                 continue
 
         # except Exception as e:
@@ -198,7 +200,7 @@ if __name__ == '__main__':
                 BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
                 BinanceOrderMinAmountException, BinanceOrderMinPriceException,
                 BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            print("Exception 10:", e)
+            print("Exception 11:", e)
             continue
 
     # ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
