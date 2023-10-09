@@ -68,11 +68,13 @@ if __name__ == '__main__':
                 # Convert to a dataframe
                 candles_dataframe = pandas.DataFrame(candles)
                 # print(candles_dataframe)
-            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                print("Exception 2:", e)
+            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+            #     print("Exception 2:", e)
+            except:
+                print("exception 2")
                 continue
 
             try:
