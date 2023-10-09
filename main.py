@@ -148,11 +148,13 @@ if __name__ == '__main__':
             if rsi <= 10.0 and not buy:
                 try:
                     buyPrice = float(spot_client.ticker_price(symbol).get('price'))
-                except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                        BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                        BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                        BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                    print("Exception 8:", e)
+                # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                #     print("Exception 8:", e)
+                except:
+                    print("exception 8")
                     continue
 
                 print("buy price:", buyPrice)
