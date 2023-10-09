@@ -84,11 +84,13 @@ if __name__ == '__main__':
                                              "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
                                              "Taker Buy Quote Asset Volume", "Ignore"]
                 # print("candles_dataframe.columns = [")
-            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                print("Exception 3:", e)
+            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+            #     print("Exception 3:", e)
+            except:
+                print("exception 3")
                 continue
 
             try:
