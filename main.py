@@ -111,11 +111,13 @@ if __name__ == '__main__':
                 candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
                     ["open", "high", "low", "close", "volume"]].astype(float)
                 # print('["open", "high", "low", "close", "volume"]].astype(float)')
-            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                print("Exception 5:", e)
+            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+            #     print("Exception 5:", e)
+            except:
+                print("exception 5")
                 continue
 
             try:
