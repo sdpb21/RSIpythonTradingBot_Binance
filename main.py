@@ -13,17 +13,18 @@ number_of_candles = 200
 rsi_size = 2
 ema_size = 7
 ema_size2 = 15
+count = 0
 
 if __name__ == '__main__':
-# Psuedocode
-# 1. Set the query timeframe, so it is consistent with the timeframe used for other exchanges
-# 2. Ensure that no more than 1000 candles retrieved (hard limit from Binance)
-# 3. Retrieve the candles
-# 4. Format the candles into a dataframe, and label columns accordingly
+    # Pseudocode
+    # 1. Set the query timeframe, so it is consistent with the timeframe used for other exchanges
+    # 2. Ensure that no more than 1000 candles retrieved (hard limit from Binance)
+    # 3. Retrieve the candles
+    # 4. Format the candles into a dataframe, and label columns accordingly
 
-# Step 1: Convert the timeframe into a Binance friendly format
-# timeframe = set_query_timeframe(timeframe=timeframe)
-# Step 2: Make sure that no more than 1000 candles are being retrieved as this is a hard limit from Binance
+    # Step 1: Convert the timeframe into a Binance friendly format
+    # timeframe = set_query_timeframe(timeframe=timeframe)
+    # Step 2: Make sure that no more than 1000 candles are being retrieved as this is a hard limit from Binance
     if number_of_candles > 1000:
         raise ValueError("Number of candles cannot be greater than 1000")
     # Step 3: Retrieve the candles
@@ -54,15 +55,23 @@ if __name__ == '__main__':
                     limit=number_of_candles
                 )
                 # print(candles)
-            except Exception as e:
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 print("exception 1:", e)
+                continue
 
             try:
                 # Convert to a dataframe
                 candles_dataframe = pandas.DataFrame(candles)
                 # print(candles_dataframe)
-            except Exception as e:
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 print("Exception 2:", e)
+                continue
 
             try:
                 # Step 4: Format the columns of the Dataframe.
@@ -71,40 +80,67 @@ if __name__ == '__main__':
                                              "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
                                              "Taker Buy Quote Asset Volume", "Ignore"]
                 # print("candles_dataframe.columns = [")
-            except Exception as e:
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 print("Exception 3:", e)
+                continue
 
             try:
                 # Add a human time column which is based on a DateTime fo the 'time' column
                 candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
                 # print("candles_dataframe['human_time'] = pandas.t")
-            except Exception as e:
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 print("Exception 4:", e)
+                continue
 
             try:
                 # Make sure that the "open", "high", "low", "close", "volume" columns are floats
                 candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
                     ["open", "high", "low", "close", "volume"]].astype(float)
                 # print('["open", "high", "low", "close", "volume"]].astype(float)')
-            except Exception as e:
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 print("Exception 5:", e)
+                continue
 
             try:
                 rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
                 # print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
-            except Exception as e:
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 print("Exception 6:", e)
+                continue
 
             try:
-                print(round(rsi, 3), datetime.datetime.now())
-            except Exception as e:
+                if count >= 10:
+                    print(round(rsi, 3), datetime.datetime.now())
+                    count = 0
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 print("Exception 7:", e)
+                continue
 
             if rsi <= 10.0 and not buy:
                 try:
                     buyPrice = float(spot_client.ticker_price(symbol).get('price'))
-                except Exception as e:
+                except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                        BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                        BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                        BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                     print("Exception 8:", e)
+                    continue
+
                 print("buy price:", buyPrice)
                 buy = True
                 # while True:
@@ -113,11 +149,15 @@ if __name__ == '__main__':
             if buy and rsi >= 90.0:
                 try:
                     priceNow = float(spot_client.ticker_price(symbol).get('price'))
-                except Exception as e:
+                except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                        BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                        BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                        BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                     print("Exception 9:", e)
+                    continue
 
                     # noinspection PyUnboundLocalVariable
-            if buy and rsi >= 99.9 and priceNow > buyPrice:
+            if buy and rsi >= 90.0 and priceNow > buyPrice:
                 print("sell price:", priceNow)
                 buy = False
                 # print("bought at: ", buyPrice)
@@ -126,10 +166,16 @@ if __name__ == '__main__':
 
             try:
                 # print("time.sleep(1.0)")
+                count += 1
                 time.sleep(1.0)
-            except Exception as e:
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 print("Exception 9:", e)
-        # except KeyboardInterrupt:
+                continue
+
+        # except Exception as e:
         except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
                 BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
                 BinanceOrderMinAmountException, BinanceOrderMinPriceException,
