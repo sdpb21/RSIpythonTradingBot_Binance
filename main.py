@@ -97,11 +97,13 @@ if __name__ == '__main__':
                 # Add a human time column which is based on a DateTime fo the 'time' column
                 candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
                 # print("candles_dataframe['human_time'] = pandas.t")
-            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                print("Exception 4:", e)
+            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+            #     print("Exception 4:", e)
+            except:
+                print("exception 4")
                 continue
 
             try:
