@@ -15,8 +15,13 @@ rsi_size = 2
 ema_size = 7
 ema_size2 = 15
 count = 0
+buy = False
+
 
 async def work():
+    count = 0
+    buy = False
+
     while True:
         # await asyncio.sleep(1)
         # print("Task Executed", datetime.datetime.now())
@@ -37,7 +42,7 @@ async def work():
             #     print("exception 1:", e)
             except:
                 print("exception 1")
-                continue
+                # continue
 
             try:
                 # Convert to a dataframe
@@ -50,11 +55,10 @@ async def work():
             #     print("Exception 2:", e)
             except:
                 print("exception 2")
-                continue
+                # continue
 
             try:
                 # Step 4: Format the columns of the Dataframe.
-                # Documentation: https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#klinecandlestick-data
                 candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
                                              "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
                                              "Taker Buy Quote Asset Volume", "Ignore"]
@@ -66,7 +70,7 @@ async def work():
             #     print("Exception 3:", e)
             except:
                 print("exception 3")
-                continue
+                # continue
 
             try:
                 # Add a human time column which is based on a DateTime fo the 'time' column
@@ -79,7 +83,7 @@ async def work():
             #     print("Exception 4:", e)
             except:
                 print("exception 4")
-                continue
+                # continue
 
             try:
                 # Make sure that the "open", "high", "low", "close", "volume" columns are floats
@@ -93,7 +97,7 @@ async def work():
             #     print("Exception 5:", e)
             except:
                 print("exception 5")
-                continue
+                # continue
 
             try:
                 rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
@@ -105,7 +109,7 @@ async def work():
             #     print("Exception 6:", e)
             except:
                 print("exception 6")
-                continue
+                # continue
 
             try:
                 if count >= 10:
@@ -116,9 +120,9 @@ async def work():
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 7:", e)
-            except:
-                print("exception 7")
-                continue
+            except Exception as e:
+                print("exception 7", e)
+                # continue
 
             if rsi <= 10.0 and not buy:
                 try:
@@ -130,7 +134,7 @@ async def work():
                 #     print("Exception 8:", e)
                 except:
                     print("exception 8")
-                    continue
+                    # continue
 
                 print("buy price:", buyPrice)
                 buy = True
@@ -147,7 +151,7 @@ async def work():
                 #     print("Exception 9:", e)
                 except:
                     print("exception 9")
-                    continue
+                    # continue
 
                     # noinspection PyUnboundLocalVariable
             if buy and rsi >= 90.0 and priceNow > buyPrice:
@@ -160,15 +164,16 @@ async def work():
             try:
                 # print("time.sleep(1.0)")
                 count += 1
-                time.sleep(1.0)
+                await asyncio.sleep(1)
+                # time.sleep(1.0)
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 10:", e)
-            except:
-                print("exception 10")
-                continue
+            except Exception as e:
+                print("exception 10", e)
+                # continue
 
         # except Exception as e:
         # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
@@ -176,9 +181,9 @@ async def work():
         #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
         #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
         #     print("Exception 11:", e)
-        except:
-            print("exception 11")
-            continue
+        except Exception as e:
+            print("exception 11", e)
+            # continue
 
 
 if __name__ == '__main__':
@@ -191,7 +196,7 @@ if __name__ == '__main__':
         except Exception as e:
             print("Exception:", e)
 
-        buy = False
+        # buy = False
 
         asyncio.ensure_future(work())
         loop.run_forever()
@@ -264,7 +269,6 @@ if __name__ == '__main__':
     #
     #         try:
     #             # Step 4: Format the columns of the Dataframe.
-    #             # Documentation: https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#klinecandlestick-data
     #             candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
     #                                          "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
     #                                          "Taker Buy Quote Asset Volume", "Ignore"]
