@@ -123,11 +123,13 @@ if __name__ == '__main__':
             try:
                 rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
                 # print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
-            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                print("Exception 6:", e)
+            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+            #     print("Exception 6:", e)
+            except:
+                print("exception 6")
                 continue
 
             try:
