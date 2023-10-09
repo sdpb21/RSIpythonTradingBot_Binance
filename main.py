@@ -165,11 +165,13 @@ if __name__ == '__main__':
             if buy and rsi >= 90.0:
                 try:
                     priceNow = float(spot_client.ticker_price(symbol).get('price'))
-                except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                        BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                        BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                        BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                    print("Exception 9:", e)
+                # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                #     print("Exception 9:", e)
+                except:
+                    print("exception 9")
                     continue
 
                     # noinspection PyUnboundLocalVariable
