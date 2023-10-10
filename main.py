@@ -193,7 +193,7 @@ if __name__ == '__main__':
         if number_of_candles > 1000:
             raise ValueError("Number of candles cannot be greater than 1000")
         try:
-            spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY)
+            spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
         except Exception as e:
             print("Exception:", e)
 
