@@ -3,8 +3,9 @@ import datetime
 import time
 import config
 # from playsound import playsound
-from binance.spot import Spot as Client
+# from binance.spot import Spot as Client
 from binance.exceptions import *
+from binance.client import Client
 import pandas
 import talib
 
@@ -40,22 +41,22 @@ async def work():
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("exception 1:", e)
-            except:
-                print("exception 1")
-                # continue
+            except Exception as e:
+                print("exception 1", e)
+                continue
 
             try:
                 # Convert to a dataframe
                 candles_dataframe = pandas.DataFrame(candles)
                 # print(candles_dataframe)
-            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            #     print("Exception 2:", e)
-            except:
-                print("exception 2")
-                # continue
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                print("Exception 2:", e)
+            # except:
+            #     print("exception 2")
+                continue
 
             try:
                 # Step 4: Format the columns of the Dataframe.
@@ -63,53 +64,53 @@ async def work():
                                              "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
                                              "Taker Buy Quote Asset Volume", "Ignore"]
                 # print("candles_dataframe.columns = [")
-            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            #     print("Exception 3:", e)
-            except:
-                print("exception 3")
-                # continue
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                print("Exception 3:", e)
+            # except:
+            #     print("exception 3")
+                continue
 
             try:
                 # Add a human time column which is based on a DateTime fo the 'time' column
                 candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
                 # print("candles_dataframe['human_time'] = pandas.t")
-            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            #     print("Exception 4:", e)
-            except:
-                print("exception 4")
-                # continue
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                print("Exception 4:", e)
+            # except:
+            #     print("exception 4")
+                continue
 
             try:
                 # Make sure that the "open", "high", "low", "close", "volume" columns are floats
                 candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
                     ["open", "high", "low", "close", "volume"]].astype(float)
                 # print('["open", "high", "low", "close", "volume"]].astype(float)')
-            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            #     print("Exception 5:", e)
-            except:
-                print("exception 5")
-                # continue
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                print("Exception 5:", e)
+            # except:
+            #     print("exception 5")
+                continue
 
             try:
                 rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
                 # print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
-            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            #     print("Exception 6:", e)
-            except:
-                print("exception 6")
-                # continue
+            except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                    BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                    BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                    BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                print("Exception 6:", e)
+            # except:
+            #     print("exception 6")
+                continue
 
             try:
                 if count >= 10:
@@ -122,19 +123,19 @@ async def work():
             #     print("Exception 7:", e)
             except Exception as e:
                 print("exception 7", e)
-                # continue
+                continue
 
             if rsi <= 10.0 and not buy:
                 try:
                     buyPrice = float(spot_client.ticker_price(symbol).get('price'))
-                # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                #     print("Exception 8:", e)
-                except:
-                    print("exception 8")
-                    # continue
+                except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                        BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                        BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                        BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                    print("Exception 8:", e)
+                # except:
+                #     print("exception 8")
+                    continue
 
                 print("buy price:", buyPrice)
                 buy = True
@@ -144,14 +145,14 @@ async def work():
             if buy and rsi >= 90.0:
                 try:
                     priceNow = float(spot_client.ticker_price(symbol).get('price'))
-                # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-                #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-                #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-                #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-                #     print("Exception 9:", e)
-                except:
-                    print("exception 9")
-                    # continue
+                except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                        BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                        BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                        BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                    print("Exception 9:", e)
+                # except:
+                #     print("exception 9")
+                    continue
 
                     # noinspection PyUnboundLocalVariable
             if buy and rsi >= 90.0 and priceNow > buyPrice:
@@ -173,7 +174,7 @@ async def work():
             #     print("Exception 10:", e)
             except Exception as e:
                 print("exception 10", e)
-                # continue
+                continue
 
         # except Exception as e:
         # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
