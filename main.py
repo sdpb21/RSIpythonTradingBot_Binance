@@ -4,7 +4,7 @@ import time
 import config
 # from playsound import playsound
 # from binance.spot import Spot as Client
-from binance.exceptions import *
+# from binance.exceptions import *
 from binance.client import Client
 import pandas
 import talib
@@ -50,8 +50,8 @@ async def work():
             try:
                 # Convert to a dataframe
                 candles_dataframe = pandas.DataFrame(candles)
-                print(candles_dataframe)
-                await asyncio.sleep(1)
+                # print(candles_dataframe)
+                # await asyncio.sleep(1)
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
@@ -62,123 +62,131 @@ async def work():
                 await asyncio.sleep(1)
                 continue
 
-            # try:
-            #     # Step 4: Format the columns of the Dataframe.
-            #     candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
-            #                                  "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
-            #                                  "Taker Buy Quote Asset Volume", "Ignore"]
+            try:
+                # Step 4: Format the columns of the Dataframe.
+                candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
+                                             "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
+                                             "Taker Buy Quote Asset Volume", "Ignore"]
             #     # print("candles_dataframe.columns = [")
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 3:", e)
-            # # except:
-            # #     print("exception 3")
-            #     continue
-            #
-            # try:
-            #     # Add a human time column which is based on a DateTime fo the 'time' column
-            #     candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
-            #     # print("candles_dataframe['human_time'] = pandas.t")
+            except Exception as e:
+                print("exception 3", e)
+                await asyncio.sleep(1)
+                continue
+
+            try:
+                # Add a human time column which is based on a DateTime fo the 'time' column
+                candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
+                # print("candles_dataframe['human_time'] = pandas.t")
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 4:", e)
-            # # except:
-            # #     print("exception 4")
-            #     continue
-            #
-            # try:
-            #     # Make sure that the "open", "high", "low", "close", "volume" columns are floats
-            #     candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
-            #         ["open", "high", "low", "close", "volume"]].astype(float)
-            #     # print('["open", "high", "low", "close", "volume"]].astype(float)')
+            except Exception as e:
+                print("exception 4", e)
+                await asyncio.sleep(1)
+                continue
+
+            try:
+                # Make sure that the "open", "high", "low", "close", "volume" columns are floats
+                candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
+                    ["open", "high", "low", "close", "volume"]].astype(float)
+                # print('["open", "high", "low", "close", "volume"]].astype(float)')
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 5:", e)
-            # # except:
-            # #     print("exception 5")
-            #     continue
-            #
-            # try:
-            #     rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
-            #     # print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
+            except Exception as e:
+                print("exception 5", e)
+                await asyncio.sleep(1)
+                continue
+
+            try:
+                rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
+                # print("rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]")
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 6:", e)
-            # # except:
-            # #     print("exception 6")
-            #     continue
-            #
-            # try:
-            #     if count >= 10:
-            #         print(round(rsi, 3), datetime.datetime.now())
-            #         count = 0
-            # # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-            # #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-            # #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-            # #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            # #     print("Exception 7:", e)
-            # except Exception as e:
-            #     print("exception 7", e)
-            #     continue
-            #
-            # if rsi <= 10.0 and not buy:
-            #     try:
-            #         buyPrice = float(spot_client.ticker_price(symbol).get('price'))
+            except Exception as e:
+                print("exception 6", e)
+                await asyncio.sleep(1)
+                continue
+
+            try:
+                if count >= 10:
+                    print(round(rsi, 3), datetime.datetime.now())
+                    count = 0
+            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+            #     print("Exception 7:", e)
+            except Exception as e:
+                print("exception 7", e)
+                await asyncio.sleep(1)
+                continue
+
+            if rsi <= 10.0 and not buy:
+                try:
+                    buyPrice = float(spot_client.ticker_price(symbol).get('price'))
             #     except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #             BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #             BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #             BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #         print("Exception 8:", e)
-            #     # except:
-            #     #     print("exception 8")
-            #         continue
-            #
-            #     print("buy price:", buyPrice)
-            #     buy = True
-            #     # while True:
-            #     #     playsound("/home/asdf/Downloads/beep-04.wav")
-            #     #     time.sleep(1.0)
-            # if buy and rsi >= 90.0:
-            #     try:
-            #         priceNow = float(spot_client.ticker_price(symbol).get('price'))
-            #     except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-            #             BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-            #             BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-            #             BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            #         print("Exception 9:", e)
-            #     # except:
-            #     #     print("exception 9")
-            #         continue
-            #
-            #         # noinspection PyUnboundLocalVariable
-            # if buy and rsi >= 90.0 and priceNow > buyPrice:
-            #     print("sell price:", priceNow)
-            #     buy = False
-            #     # print("bought at: ", buyPrice)
-            #     # playsound("/home/asdf/Downloads/beep-04.wav")
-            #     # break
-            #
-            # try:
-            #     # print("time.sleep(1.0)")
-            #     count += 1
-            #     await asyncio.sleep(1)
-            #     # time.sleep(1.0)
-            # # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
-            # #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
-            # #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
-            # #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
-            # #     print("Exception 10:", e)
-            # except Exception as e:
-            #     print("exception 10", e)
-            #     continue
+                except Exception as e:
+                    print("exception 8", e)
+                    await asyncio.sleep(1)
+                    continue
+
+                print("************************************ buy price:", buyPrice)
+                buy = True
+                # while True:
+                #     playsound("/home/asdf/Downloads/beep-04.wav")
+                #     time.sleep(1.0)
+            if buy and rsi >= 90.0:
+                try:
+                    priceNow = float(spot_client.ticker_price(symbol).get('price'))
+                # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+                #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+                #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+                #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+                #     print("Exception 9:", e)
+                except Exception as e:
+                    print("exception 9", e)
+                    await asyncio.sleep(1)
+                    continue
+
+                    # noinspection PyUnboundLocalVariable
+            if buy and rsi >= 90.0 and priceNow > buyPrice:
+                print("************************************ sell price:", priceNow)
+                buy = False
+                # print("bought at: ", buyPrice)
+                # playsound("/home/asdf/Downloads/beep-04.wav")
+                # break
+
+            try:
+                # print("time.sleep(1.0)")
+                count += 1
+                await asyncio.sleep(1)
+                # time.sleep(1.0)
+            # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
+            #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
+            #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
+            #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
+            #     print("Exception 10:", e)
+            except Exception as e:
+                print("exception 10", e)
+                await asyncio.sleep(1)
+                continue
 
         # except Exception as e:
         # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
