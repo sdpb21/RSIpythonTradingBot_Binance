@@ -15,8 +15,6 @@ number_of_candles = 200
 rsi_size = 2
 ema_size = 7
 ema_size2 = 15
-count = 0
-buy = False
 
 
 async def work():
@@ -121,10 +119,10 @@ async def work():
                 continue
 
             try:
-                # if count >= 10:
-                print(round(rsi, 3), datetime.datetime.now())
-                print(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-                #     count = 0
+                if count >= 10:
+                    print(round(rsi, 3), datetime.datetime.now())
+                    # print(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                    count = 0
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
@@ -137,7 +135,7 @@ async def work():
 
             if rsi <= 10.0 and not buy:
                 try:
-                    buyPrice = float(spot_client.ticker_price(symbol).get('price'))
+                    buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
             #     except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #             BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #             BinanceOrderMinAmountException, BinanceOrderMinPriceException,
@@ -155,7 +153,7 @@ async def work():
                 #     time.sleep(1.0)
             if buy and rsi >= 90.0:
                 try:
-                    priceNow = float(spot_client.ticker_price(symbol).get('price'))
+                    priceNow = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
                 # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
                 #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
                 #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
