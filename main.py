@@ -48,6 +48,7 @@ async def work():
             #     print("exception 1:", e)
             except Exception as e:
                 print("exception 1", e)
+                await asyncio.sleep(1)
                 continue
 
             # try:
