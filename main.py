@@ -35,12 +35,8 @@ async def work():
                     interval=Client.KLINE_INTERVAL_1MINUTE,
                     limit=number_of_candles
                 )
-                #     symbol=symbol,
-                #     interval=timeframe,
-                #     limit=number_of_candles
-                # )
-                print(candles)
-                await asyncio.sleep(1)
+                # print(candles)
+                # await asyncio.sleep(1)
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
@@ -51,19 +47,21 @@ async def work():
                 await asyncio.sleep(1)
                 continue
 
-            # try:
-            #     # Convert to a dataframe
-            #     candles_dataframe = pandas.DataFrame(candles)
-            #     # print(candles_dataframe)
+            try:
+                # Convert to a dataframe
+                candles_dataframe = pandas.DataFrame(candles)
+                print(candles_dataframe)
+                await asyncio.sleep(1)
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 2:", e)
-            # # except:
-            # #     print("exception 2")
-            #     continue
-            #
+            except Exception as e:
+                print("exception 2", e)
+                await asyncio.sleep(1)
+                continue
+
             # try:
             #     # Step 4: Format the columns of the Dataframe.
             #     candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
