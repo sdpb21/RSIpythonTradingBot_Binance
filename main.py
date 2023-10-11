@@ -1,6 +1,6 @@
 import asyncio
 import datetime
-import time
+# import time
 import config
 # from playsound import playsound
 # from binance.spot import Spot as Client
