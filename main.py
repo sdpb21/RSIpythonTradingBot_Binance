@@ -121,7 +121,7 @@ async def work():
             try:
                 if count >= 10:
                     print(round(rsi, 3), datetime.datetime.now())
-                    # print(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                    # print(float(spot_client.get_symbol_ticker(symbol=symbol).get('price')))
                     count = 0
             # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
             #         BinanceOrderInactiveSymbolException, BinanceOrderUnknownSymbolException,
