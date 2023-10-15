@@ -414,8 +414,9 @@ if __name__ == '__main__':
         #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
         #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
         #     print("Exception 11:", e)
-        except:
-            print("exception 11")
+        except Exception as e:
+            print("exception 11", e)
+            time.sleep(2.0)
             continue
 
     # ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
