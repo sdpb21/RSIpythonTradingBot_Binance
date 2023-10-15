@@ -381,8 +381,9 @@ if __name__ == '__main__':
                 #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
                 #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 #     print("Exception 9:", e)
-                except:
-                    print("exception 9")
+                except Exception as e:
+                    print("exception 9", e)
+                    time.sleep(2.0)
                     continue
 
                     # noinspection PyUnboundLocalVariable
