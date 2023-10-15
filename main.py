@@ -245,6 +245,8 @@ if __name__ == '__main__':
     # candles_dataframe[ema_name] = talib.EMA(candles_dataframe['close'], timeperiod=ema_size)
     # print(candles_dataframe)
     buy = False
+    count = 0
+
     while True:
 
         try:
@@ -348,8 +350,9 @@ if __name__ == '__main__':
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 7:", e)
-            except:
-                print("exception 7")
+            except Exception as e:
+                print("exception 7", e)
+                time.sleep(2.0)
                 continue
 
             if rsi <= 10.0 and not buy:
