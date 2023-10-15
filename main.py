@@ -1,6 +1,6 @@
 import asyncio
 import datetime
-# import time
+import time
 import config
 # from playsound import playsound
 # from binance.spot import Spot as Client
@@ -251,9 +251,9 @@ if __name__ == '__main__':
 
             try:
                 # Retrieve the candles / OHLC data
-                candles = spot_client.klines(
+                candles = spot_client.get_historical_klines(
                     symbol=symbol,
-                    interval=timeframe,
+                    interval=Client.KLINE_INTERVAL_1MINUTE,
                     limit=number_of_candles
                 )
                 # print(candles)
@@ -262,8 +262,9 @@ if __name__ == '__main__':
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("exception 1:", e)
-            except:
-                print("exception 1")
+            except Exception as e:
+                print("exception 1", e)
+                time.sleep(2.0)
                 continue
 
             try:
