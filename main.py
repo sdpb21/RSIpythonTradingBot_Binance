@@ -232,7 +232,7 @@ if __name__ == '__main__':
     # Step 3: Retrieve the candles
     # Instantiate the Spot Client
     try:
-        spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY)
+        spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
     except Exception as e:
         print("Exception:", e)
 
