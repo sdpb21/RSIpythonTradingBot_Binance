@@ -334,8 +334,9 @@ if __name__ == '__main__':
             #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
             #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
             #     print("Exception 6:", e)
-            except:
-                print("exception 6")
+            except Exception as e:
+                print("exception 6", e)
+                time.sleep(2.0)
                 continue
 
             try:
