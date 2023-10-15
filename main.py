@@ -363,8 +363,9 @@ if __name__ == '__main__':
                 #         BinanceOrderMinAmountException, BinanceOrderMinPriceException,
                 #         BinanceOrderMinTotalException, BinanceWebsocketUnableToConnect, KeyboardInterrupt) as e:
                 #     print("Exception 8:", e)
-                except:
-                    print("exception 8")
+                except Exception as e:
+                    print("exception 8", e)
+                    time.sleep(2.0)
                     continue
 
                 print("buy price:", buyPrice)
