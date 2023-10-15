@@ -368,7 +368,7 @@ if __name__ == '__main__':
                     time.sleep(2.0)
                     continue
 
-                print("buy price:", buyPrice)
+                print("************************************ buy price:", buyPrice)
                 buy = True
                 # while True:
                 #     playsound("/home/asdf/Downloads/beep-04.wav")
