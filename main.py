@@ -10,7 +10,6 @@ import pandas
 import talib
 
 symbol = "BTCFDUSD"
-timeframe = "1m"
 usd = 100
 number_of_candles = 200
 rsi_size = 2
@@ -175,7 +174,7 @@ if __name__ == '__main__':
                 time.sleep(2.0)
                 continue
 
-            if rsi <= 10.0 and not buy:
+            if rsi <= 5.0 and not buy:
                 try:
                     buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
                 # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
@@ -218,7 +217,7 @@ if __name__ == '__main__':
                     print("Exception getting buy order status:", e)
                     continue
 
-            if buy and rsi >= 90.0:
+            if buy and rsi >= 95.0:
                 try:
                     priceNow = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
                 # except (BinanceAPIException, BinanceOrderException, BinanceRequestException,
@@ -231,7 +230,7 @@ if __name__ == '__main__':
                     time.sleep(2.0)
                     continue
 
-            if buy and rsi >= 90.0 and priceNow > buyPrice:
+            if buy and rsi >= 95.0 and priceNow > buyPrice:
                 print("************************************ sell price:", priceNow)
                 try:
                     quantity = float(spot_client.get_order(symbol=symbol, orderId=orderID).get('executedQty'))
