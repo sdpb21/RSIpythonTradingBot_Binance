@@ -11,7 +11,6 @@ import talib
 
 symbol = "BTCFDUSD"
 timeframe = "1m"
-buyPrice = 27000
 usd = 100
 number_of_candles = 200
 rsi_size = 2
@@ -56,27 +55,6 @@ if __name__ == '__main__':
         spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
     except Exception as e:
         print("Exception creating object Client:", e)
-
-    # params = {
-    #     "symbol": symbol,
-    #     "side": 'BUY',
-    #     "type": "LIMIT",
-    #     "timeInForce": "GTC",
-    #     "quantity": quantity,
-    #     "price": buyPrice
-    # }
-    # try:
-    #     orderID = spot_client.create_order(**params).get('orderId')
-    #     print("orderId:", orderID)
-    #     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
-    #     print(orderStatus)
-    #     while orderStatus != "FILLED":
-    #         time.sleep(2.0)
-    #         print("waitin' to get FILLED")
-    #         orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
-    #         print(orderStatus)
-    # except Exception as e:
-    #     print("Exception creating order:", e)
 
     # to show all columns when printing to screen:
     # pandas.set_option('display.max_columns', None)
@@ -224,6 +202,11 @@ if __name__ == '__main__':
                     }
                     orderID = spot_client.create_order(**params).get('orderId')
                     print("orderId:", orderID)
+                except Exception as e:
+                    print("Exception creating buy order:", e)
+                    continue
+                buy = True
+                try:
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
                     while orderStatus != "FILLED":
@@ -232,9 +215,8 @@ if __name__ == '__main__':
                         orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                         print(orderStatus)
                 except Exception as e:
-                    print("Exception creating buy order:", e)
+                    print("Exception getting buy order status:", e)
                     continue
-                buy = True
 
             if buy and rsi >= 90.0:
                 try:
@@ -249,13 +231,35 @@ if __name__ == '__main__':
                     time.sleep(2.0)
                     continue
 
-                    # noinspection PyUnboundLocalVariable
             if buy and rsi >= 90.0 and priceNow > buyPrice:
                 print("************************************ sell price:", priceNow)
+                try:
+                    quantity = float(spot_client.get_order(symbol=symbol, orderId=orderID).get('executedQty'))
+                    params = {
+                        "symbol": symbol,
+                        "side": 'SELL',
+                        "type": "LIMIT",
+                        "timeInForce": "GTC",
+                        "quantity": quantity,
+                        "price": priceNow
+                    }
+                    orderID = spot_client.create_order(**params).get('orderId')
+                    print("orderId:", orderID)
+                except Exception as e:
+                    print("Exception creating sell order:", e)
+                    continue
                 buy = False
-                # print("bought at: ", buyPrice)
-                # playsound("/home/asdf/Downloads/beep-04.wav")
-                # break
+                try:
+                    orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                    print(orderStatus)
+                    while orderStatus != "FILLED":
+                        time.sleep(2.0)
+                        print("waitin' to get FILLED")
+                        orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                        print(orderStatus)
+                except Exception as e:
+                    print("Exception gettin' order status:", e)
+                    continue
 
             try:
                 # print("time.sleep(1.0)")
