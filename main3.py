@@ -8,7 +8,7 @@ import time
 symbol = "BTCFDUSD"
 usd = 200
 number_of_candles = 200
-rsi_size = 2
+rsi_size = 4
 
 if __name__ == '__main__':
     spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
@@ -16,8 +16,8 @@ if __name__ == '__main__':
 
         candles = spot_client.get_historical_klines(
             symbol=symbol,
-            interval=Client.KLINE_INTERVAL_1HOUR,
-            # interval=Client.KLINE_INTERVAL_15MINUTE,
+            # interval=Client.KLINE_INTERVAL_1HOUR,
+            interval=Client.KLINE_INTERVAL_15MINUTE,
             # interval=Client.KLINE_INTERVAL_1MINUTE,
             limit=number_of_candles
         )
@@ -34,3 +34,7 @@ if __name__ == '__main__':
             ["open", "high", "low", "close", "volume"]].astype(float)
 
         rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
+
+        print(round(rsi, 3), datetime.datetime.now())
+
+        time.sleep(0.3)
