@@ -65,6 +65,7 @@ if __name__ == '__main__':
             if rsi <= 75.0:
                 buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
                 print("************************************ buy price:", buyPrice)
+                quantity = usd / buyPrice
                 # comprar otra vez
             if rsi > 75.0:
                 buy = False
