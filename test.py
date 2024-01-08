@@ -9,7 +9,7 @@ symbol = "BTCFDUSD"
 usd = 100
 buy = False
 number_of_candles = 200
-rsi_size = 6
+rsi_size = 2
 
 if __name__ == '__main__':
 
