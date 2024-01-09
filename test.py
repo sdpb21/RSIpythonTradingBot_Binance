@@ -20,42 +20,48 @@ if __name__ == '__main__':
 
     while True:
 
-        candles = spot_client.get_historical_klines(
-            symbol=symbol,
-            # interval=Client.KLINE_INTERVAL_1HOUR,
-            # interval=Client.KLINE_INTERVAL_15MINUTE,
-            interval=Client.KLINE_INTERVAL_1MINUTE,
-            limit=number_of_candles
-        )
+        try:
 
-        candles_dataframe = pandas.DataFrame(candles)
+            candles = spot_client.get_historical_klines(
+                symbol=symbol,
+                # interval=Client.KLINE_INTERVAL_1HOUR,
+                # interval=Client.KLINE_INTERVAL_15MINUTE,
+                interval=Client.KLINE_INTERVAL_1MINUTE,
+                limit=number_of_candles
+            )
 
-        candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
-                                     "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
-                                     "Taker Buy Quote Asset Volume", "Ignore"]
+            candles_dataframe = pandas.DataFrame(candles)
 
-        candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
+            candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
+                                         "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
+                                         "Taker Buy Quote Asset Volume", "Ignore"]
 
-        candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
-            ["open", "high", "low", "close", "volume"]].astype(float)
+            candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
 
-        rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
+            candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
+                ["open", "high", "low", "close", "volume"]].astype(float)
 
-        if not buy and rsi < 20.0:
-            buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-            quantity = usd / buyPrice
-            buy = True
-            print("************************************ buy price:", buyPrice)
+            rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
 
-        priceNow = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-        print(priceNow, round(rsi, 3), datetime.datetime.now())
+            if not buy and rsi < 20.0:
+                buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                quantity = usd / buyPrice
+                buy = True
+                print("************************************ buy price:", buyPrice)
 
-        if buy and priceNow > buyPrice and rsi > 80.0:
-            buy = False
-            usdAfterSell = quantity * priceNow
-            profit = usdAfterSell - usd
-            sumProfit += profit
-            print("************************************ sell price:", priceNow)
-            print("profit:", profit, "sumProfit: ", sumProfit)
+            priceNow = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+            print(priceNow, round(rsi, 3), datetime.datetime.now())
 
-        time.sleep(59.0)
+            if buy and priceNow > buyPrice and rsi > 80.0:
+                buy = False
+                usdAfterSell = quantity * priceNow
+                profit = usdAfterSell - usd
+                sumProfit += profit
+                print("************************************ sell price:", priceNow)
+                print("profit:", profit, "sumProfit: ", sumProfit)
+
+            time.sleep(59.0)
+
+        except Exception as e:
+            print("EXCEPTION 1: ", e)
+            continue
