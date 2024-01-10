@@ -22,52 +22,60 @@ if __name__ == '__main__':
     spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
     while True:
 
-        candles = spot_client.get_historical_klines(
-            symbol=symbol,
-            # interval=Client.KLINE_INTERVAL_1HOUR,
-            # interval=Client.KLINE_INTERVAL_15MINUTE,
-            interval=Client.KLINE_INTERVAL_1MINUTE,
-            limit=number_of_candles
-        )
+        try:
 
-        candles_dataframe = pandas.DataFrame(candles)
+            candles = spot_client.get_historical_klines(
+                symbol=symbol,
+                # interval=Client.KLINE_INTERVAL_1HOUR,
+                # interval=Client.KLINE_INTERVAL_15MINUTE,
+                interval=Client.KLINE_INTERVAL_1MINUTE,
+                limit=number_of_candles
+            )
 
-        candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
-                                     "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
-                                     "Taker Buy Quote Asset Volume", "Ignore"]
+            candles_dataframe = pandas.DataFrame(candles)
 
-        candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
+            candles_dataframe.columns = ["time", "open", "high", "low", "close", "volume", "close Time",
+                                         "Quote Asset Volume", "Number of Trades", "Taker Buy Base Asset Volume",
+                                         "Taker Buy Quote Asset Volume", "Ignore"]
 
-        candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
-            ["open", "high", "low", "close", "volume"]].astype(float)
+            candles_dataframe['human_time'] = pandas.to_datetime(candles_dataframe['time'], unit='ms')
 
-        # ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
-        ema2 = talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1]
+            candles_dataframe[["open", "high", "low", "close", "volume"]] = candles_dataframe[
+                ["open", "high", "low", "close", "volume"]].astype(float)
 
-        print(round(ema2, 3))
+            # ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
+            ema2 = talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1]
 
-        m = ema2 - ema1
+            print(round(ema2, 3))
 
-        # print("m:", m)
-        ema1 = ema2
+            m = ema2 - ema1
 
-        if not buy and (mPast < 0.0) and (m > 0.0):
-            buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-            print("************************************ buy price:", buyPrice)
-            buy = True
-            quantity = usd / buyPrice
+            # print("m:", m)
+            ema1 = ema2
 
-        actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-        print(actualPrice, '\t', round(m, 3), '\t', datetime.datetime.now())
+            if not buy and (mPast < 0.0) and (m > 0.0):
+                buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                print("************************************ buy price:", buyPrice)
+                buy = True
+                quantity = usd / buyPrice
 
-        if buy and actualPrice > buyPrice and (mPast > 0.0) and (m < 0.0):
-            print("************************************ sell price:", actualPrice)
-            usdAfterSell = quantity * actualPrice
-            profit = usdAfterSell - usd
-            sumProfit += profit
-            print("profit:", profit, "sumProfit: ", sumProfit)
-            buy = False
+            actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+            print(actualPrice, '\t', round(m, 3), '\t', datetime.datetime.now())
 
-        mPast = m
+            if buy and actualPrice > buyPrice and (mPast > 0.0) and (m < 0.0):
+                print("************************************ sell price:", actualPrice)
+                usdAfterSell = quantity * actualPrice
+                profit = usdAfterSell - usd
+                sumProfit += profit
+                print("profit:", profit, "sumProfit: ", sumProfit)
+                buy = False
 
-        time.sleep(59.0)
+            mPast = m
+
+            time.sleep(59.0)
+
+        except Exception as e:
+            print("EXCEPTION 1: ", e)
+            time.sleep(59.0)
+            continue
+            
