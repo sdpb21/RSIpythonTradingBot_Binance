@@ -51,8 +51,8 @@ if __name__ == '__main__':
                     ["open", "high", "low", "close", "volume"]].astype(float)
 
                 # ema = int(talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1])
-                ema2 = talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1]
-                # ema2 = talib.EMA(candles_dataframe['open'], timeperiod=ema_size).iloc[-1]
+                # ema2 = talib.EMA(candles_dataframe['close'], timeperiod=ema_size).iloc[-1]
+                ema2 = talib.EMA(candles_dataframe['open'], timeperiod=ema_size).iloc[-1]
 
                 # print(round(ema2, 3), '\t', datetime.datetime.now())
 
