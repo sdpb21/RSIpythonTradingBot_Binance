@@ -75,4 +75,5 @@ if __name__ == '__main__':
             time.sleep(59.0)
         except Exception as e:
             print("EXCEPTION 1: ", e)
+            time.sleep(59.0)
             continue
