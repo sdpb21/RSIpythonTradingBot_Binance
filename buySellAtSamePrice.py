@@ -4,9 +4,9 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-price = 0
+price = 69225
 sell = False
-buy = False
+buy = True      # Start selling
 
 if __name__ == '__main__':
 
