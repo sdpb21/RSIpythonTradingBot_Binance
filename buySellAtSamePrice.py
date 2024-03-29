@@ -1,5 +1,12 @@
 import config
 from binance.client import Client
+import datetime
+import time
+
+symbol = "BTCFDUSD"
+price = 0
+sell = False
+buy = False
 
 if __name__ == '__main__':
 
@@ -9,10 +16,25 @@ if __name__ == '__main__':
 
         try:
 
+            actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
 
-            # time.sleep(59.0)
+            print(actualPrice, '\t', datetime.datetime.now())
+
+            if (actualPrice < price) and not sell:
+                # sell
+                print("************************************ sell price:", actualPrice)
+                sell = True
+                buy = False
+
+            if actualPrice >= price and not buy:
+                # buy
+                print("************************************ buy price:", actualPrice)
+                buy = True
+                sell = False
+
+            time.sleep(2.0)
 
         except Exception as e:
             print("EXCEPTION 1: ", e)
-            # time.sleep(59.0)
+            time.sleep(59.0)
             continue
