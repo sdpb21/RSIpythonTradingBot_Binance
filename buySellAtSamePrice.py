@@ -4,9 +4,9 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-price = 70270.0
-sellLimit = price + 10.0
-buyLimit = price - 10.0
+price = 70220.0
+sellLimit = price - 10.0
+buyLimit = price + 10.0
 sell = False
 buy = True      # Start selling
 
@@ -22,20 +22,20 @@ if __name__ == '__main__':
 
             print(actualPrice, '\t', datetime.datetime.now())
 
-            if actualPrice >= buyLimit and actualPrice <= price and not buy:
-                # buy
-                print("************************************ buy price:", actualPrice)
-                buy = True
-                sell = False
-
-            actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-
-            if (actualPrice < sellLimit) and actualPrice >= price and not sell:
+            if (actualPrice < price) and actualPrice >= sellLimit and not sell:
                 # sell
                 print("************************************ sell price:", actualPrice)
                 sell = True
                 buy = False
 
+            actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+
+            if actualPrice >= price and actualPrice <= buyLimit and not buy:
+                # buy
+                print("************************************ buy price:", actualPrice)
+                buy = True
+                sell = False
+            
             time.sleep(2.0)
 
         except Exception as e:
