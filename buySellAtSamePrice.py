@@ -34,7 +34,7 @@ if __name__ == '__main__':
                         "type": "LIMIT",
                         "timeInForce": "GTC",
                         "quantity": quantity,
-                        "price": actualPrice
+                        "price": sellLimit
                     }
                 orderID = spot_client.create_order(**params).get('orderId')
                 print("orderId:", orderID)
@@ -54,6 +54,24 @@ if __name__ == '__main__':
                 print("************************************ buy price:", actualPrice)
                 buy = True
                 sell = False
+                params = {
+                        "symbol": symbol,
+                        "side": 'BUY',
+                        "type": "LIMIT",
+                        "timeInForce": "GTC",
+                        "quantity": quantity,
+                        "price": buyLimit
+                    }
+                orderID = spot_client.create_order(**params).get('orderId')
+                print("orderId:", orderID)
+                
+                orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                print(orderStatus)
+                while orderStatus != "FILLED":
+                    time.sleep(2.0)
+                    print("waitin' to get FILLED")
+                    orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                    print(orderStatus)
             
             time.sleep(2.0)
 
