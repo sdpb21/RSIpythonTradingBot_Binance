@@ -9,6 +9,7 @@ sellLimit = price - 10.0
 buyLimit = price + 10.0
 sell = False
 buy = True      # Start selling
+quantity = 0.005
 
 if __name__ == '__main__':
 
@@ -27,6 +28,24 @@ if __name__ == '__main__':
                 print("************************************ sell price:", actualPrice)
                 sell = True
                 buy = False
+                params = {
+                        "symbol": symbol,
+                        "side": 'SELL',
+                        "type": "LIMIT",
+                        "timeInForce": "GTC",
+                        "quantity": quantity,
+                        "price": actualPrice
+                    }
+                orderID = spot_client.create_order(**params).get('orderId')
+                print("orderId:", orderID)
+                
+                orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                print(orderStatus)
+                while orderStatus != "FILLED":
+                    time.sleep(2.0)
+                    print("waitin' to get FILLED")
+                    orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                    print(orderStatus)
 
             actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
 
