@@ -4,12 +4,12 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-price = 66900.0
+price = 66000.0
 sellLimit = price - 10.0
 buyLimit = price + 10.0
 sell = False
 buy = True      # Start selling
-quantity = 0.00532
+quantity = 0.0057
 
 if __name__ == '__main__':
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
                         "type": "LIMIT",
                         "timeInForce": "GTC",
                         "quantity": quantity,
-                        "price": sellLimit
+                        "price": price
                     }
                 orderID = spot_client.create_order(**params).get('orderId')
                 print("orderId:", orderID)
@@ -60,7 +60,7 @@ if __name__ == '__main__':
                         "type": "LIMIT",
                         "timeInForce": "GTC",
                         "quantity": quantity,
-                        "price": buyLimit
+                        "price": price
                     }
                 orderID = spot_client.create_order(**params).get('orderId')
                 print("orderId:", orderID)
