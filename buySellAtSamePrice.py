@@ -4,12 +4,12 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-price = 66000.0
-sellLimit = price - 10.0
-buyLimit = price + 10.0
+price = 68300.0
+sellLimit = price + 10.0
+# buyLimit = price + 10.0
 sell = False
 buy = True      # Start selling
-quantity = 0.0057
+quantity = 0.00554
 
 if __name__ == '__main__':
 
@@ -23,9 +23,8 @@ if __name__ == '__main__':
 
             print(actualPrice, '\t', datetime.datetime.now())
 
-            if (actualPrice < price) and actualPrice >= sellLimit and not sell:
+            if (actualPrice < sellLimit) and not sell:
                 # sell
-                print("************************************ sell price:", actualPrice)
                 sell = True
                 buy = False
                 params = {
@@ -34,7 +33,7 @@ if __name__ == '__main__':
                         "type": "LIMIT",
                         "timeInForce": "GTC",
                         "quantity": quantity,
-                        "price": price
+                        "price": (price + 6)
                     }
                 orderID = spot_client.create_order(**params).get('orderId')
                 print("orderId:", orderID)
@@ -46,12 +45,13 @@ if __name__ == '__main__':
                     print("waitin' to get FILLED")
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
+                print("************************************ sell price:", actualPrice)
+                time.sleep(59.0)
 
             actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
 
-            if actualPrice >= price and actualPrice <= buyLimit and not buy:
+            if actualPrice > price and not buy:
                 # buy
-                print("************************************ buy price:", actualPrice)
                 buy = True
                 sell = False
                 params = {
@@ -60,7 +60,7 @@ if __name__ == '__main__':
                         "type": "LIMIT",
                         "timeInForce": "GTC",
                         "quantity": quantity,
-                        "price": price
+                        "price": (sellLimit - 6)
                     }
                 orderID = spot_client.create_order(**params).get('orderId')
                 print("orderId:", orderID)
@@ -72,6 +72,8 @@ if __name__ == '__main__':
                     print("waitin' to get FILLED")
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
+                print("************************************ buy price:", actualPrice)
+                time.sleep(59.0)
             
             time.sleep(2.0)
 
