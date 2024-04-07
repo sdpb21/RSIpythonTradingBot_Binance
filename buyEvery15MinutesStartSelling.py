@@ -5,9 +5,9 @@ import time
 
 buy = True
 symbol = "BTCFDUSD"
-buyPrice = 67773.28
+buyPrice = 68258.42
 usd = 377
-quantity = 0.00556
+quantity = 0.00554
 sumProfit = 0
 
 if __name__ == '__main__':
@@ -28,7 +28,6 @@ if __name__ == '__main__':
             # boolMinutesSELL = minuteNow == 59 or minuteNow == 14 or minuteNow == 29 or minuteNow == 44
 
             if buy and boolMinutes and actualPrice > buyPrice:
-                print("************************************ sell price:", actualPrice)
                 buy = False
                 
                 params = {
@@ -50,6 +49,7 @@ if __name__ == '__main__':
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
                 
+                print("************************************ sell price:", actualPrice)
                 usdAfterSell = quantity * actualPrice
                 profit = usdAfterSell - usd
                 sumProfit += profit
@@ -58,7 +58,6 @@ if __name__ == '__main__':
             if not buy and boolMinutes:
                 # buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
                 buyPrice = actualPrice
-                print("************************************ buy price:", buyPrice)
                 buy = True
                 quantity = round(usd / buyPrice, 5)
                 params = {
@@ -79,7 +78,8 @@ if __name__ == '__main__':
                     print("waitin' to get FILLED")
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
-
+                print("************************************ buy price:", buyPrice)
+                
             time.sleep(59.0)
 
         except Exception as e:
