@@ -24,32 +24,9 @@ if __name__ == '__main__':
             actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
             print(actualPrice, '\t', datetime.datetime.now())
 
-            if not buy and hourNow == 21:
-                buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-                print("************************************ buy price:", buyPrice)
-                buy = True
-                quantity = round(usd / buyPrice, 5)
-                params = {
-                        "symbol": symbol,
-                        "side": 'BUY',
-                        "type": "LIMIT",
-                        "timeInForce": "GTC",
-                        "quantity": quantity,
-                        "price": buyPrice
-                    }
-                orderID = spot_client.create_order(**params).get('orderId')
-                print("orderId:", orderID)
-                
-                orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
-                print(orderStatus)
-                while orderStatus != "FILLED":
-                    time.sleep(2.0)
-                    print("waitin' to get FILLED")
-                    orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
-                    print(orderStatus)
+            
 
-            if buy and hourNow == 20 and minuteNow == 59 and actualPrice > buyPrice:
-                print("************************************ sell price:", actualPrice)
+            if buy and hourNow == 21 and minuteNow == 0 and actualPrice > buyPrice:
                 buy = False
                 
                 params = {
@@ -71,11 +48,38 @@ if __name__ == '__main__':
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
                 
+                print("************************************ sell price:", actualPrice)
+                
                 usdAfterSell = quantity * actualPrice
                 profit = usdAfterSell - usd
                 sumProfit += profit
                 print("profit:", profit, "sumProfit: ", sumProfit)
 
+            if not buy and hourNow == 21:
+                # buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                buy = True
+                quantity = round(usd / buyPrice, 5)
+                params = {
+                        "symbol": symbol,
+                        "side": 'BUY',
+                        "type": "LIMIT",
+                        "timeInForce": "GTC",
+                        "quantity": quantity,
+                        "price": buyPrice
+                    }
+                orderID = spot_client.create_order(**params).get('orderId')
+                print("orderId:", orderID)
+                
+                orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                print(orderStatus)
+                while orderStatus != "FILLED":
+                    time.sleep(2.0)
+                    print("waitin' to get FILLED")
+                    orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                    print(orderStatus)
+                
+                print("************************************ buy price:", buyPrice)
+                    
             time.sleep(59.0)
 
         except Exception as e:
