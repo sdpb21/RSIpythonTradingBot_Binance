@@ -6,7 +6,7 @@ import time
 buy = False
 symbol = "BTCFDUSD"
 buyPrice = 0
-usd = 382
+usd = 377
 quantity = 0
 sumProfit = 0
 
