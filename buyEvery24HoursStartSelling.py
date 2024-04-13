@@ -5,9 +5,9 @@ import time
 
 buy = True
 symbol = "BTCFDUSD"
-buyPrice = 62506
-usd = 269
-quantity = 0.0043
+buyPrice = 68300
+usd = 413
+quantity = 0.00605
 sumProfit = 0
 
 if __name__ == '__main__':
@@ -57,6 +57,7 @@ if __name__ == '__main__':
 
             if not buy and hourNow == 21:
                 # buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                buyPrice = actualPrice
                 buy = True
                 quantity = round(usd / buyPrice, 5)
                 params = {
