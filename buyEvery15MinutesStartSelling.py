@@ -5,9 +5,9 @@ import time
 
 buy = True
 symbol = "BTCFDUSD"
-buyPrice = 70717.74
-usd = 382
-quantity = 0.00540
+buyPrice = 65001.07
+usd = 442
+quantity = 0.00680
 sumProfit = 0
 
 if __name__ == '__main__':
