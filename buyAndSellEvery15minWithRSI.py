@@ -9,10 +9,11 @@ symbol = "BTCFDUSD"
 usd = 100
 number_of_candles = 200
 rsi_size = 2
-buy = False
-buyPrice = 100000
-quantity = 0
-sumProfit = 0
+buy = True
+buyPrice = 0
+quantity = 0.00702
+rsiMin = 1.0
+rsiMax = 99.0
 
 if __name__ == '__main__':
     spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
@@ -41,36 +42,63 @@ if __name__ == '__main__':
 
             rsi = talib.RSI(candles_dataframe['close'], timeperiod=rsi_size).iloc[-1]
 
-            print(round(rsi, 3), datetime.datetime.now())
+            actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+            print(actualPrice, '\t', round(rsi, 3), '\t', datetime.datetime.now())
 
             # time.sleep(0.3)
-
-            if not buy and rsi < 25.0:
-                buy = True
-                buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-                print("************************************ buy price:", buyPrice)
-                quantity = usd / buyPrice
-                # comprar
-
-            actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
             minutes = datetime.datetime.now().minute
             boolMinutes = minutes == 0 or minutes == 15 or minutes == 30 or minutes == 45
-            # time.sleep(60.0)
 
-            if buy and buyPrice < actualPrice and boolMinutes:
+            if not buy and rsi < rsiMin and boolMinutes:
+                buy = True
+                buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                quantity = round(usd / buyPrice, 5)
+                params = {
+                        "symbol": symbol,
+                        "side": 'BUY',
+                        "type": "LIMIT",
+                        "timeInForce": "GTC",
+                        "quantity": quantity,
+                        "price": buyPrice
+                    }
+                orderID = spot_client.create_order(**params).get('orderId')
+                print("orderId:", orderID)
+                
+                orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                print(orderStatus)
+                while orderStatus != "FILLED":
+                    time.sleep(2.0)
+                    print("waitin' to get FILLED")
+                    orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                    print(orderStatus)
+                print("************************************ buy price:", buyPrice)
+                # comprar
+
+            if buy and buyPrice < actualPrice and rsi > rsiMax and boolMinutes:
                 # vender
+                actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                params = {
+                        "symbol": symbol,
+                        "side": 'SELL',
+                        "type": "LIMIT",
+                        "timeInForce": "GTC",
+                        "quantity": quantity,
+                        "price": actualPrice
+                    }
+                orderID = spot_client.create_order(**params).get('orderId')
+                print("orderId:", orderID)
+                
+                orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                print(orderStatus)
+                while orderStatus != "FILLED":
+                    time.sleep(2.0)
+                    print("waitin' to get FILLED")
+                    orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
+                    print(orderStatus)
+                
                 print("************************************ sell price:", actualPrice)
-                usdAfterSell = quantity * actualPrice
-                profit = usdAfterSell - usd
-                sumProfit += profit
-                print("profit:", profit, "sumProfit: ", sumProfit)
-                if rsi <= 75.0:
-                    buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
-                    print("************************************ buy price:", buyPrice)
-                    quantity = usd / buyPrice
-                    # comprar otra vez
-                if rsi > 75.0:
-                    buy = False
+                usd = actualPrice * quantity
+                buy = False
 
             time.sleep(59.0)
         except Exception as e:
