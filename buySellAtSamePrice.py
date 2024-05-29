@@ -4,13 +4,13 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-price = 68900.0
+price = 69000.0
 sellLimit = price + 15.0
 startPrice = sellLimit + 10.0
 # buyLimit = price + 10.0
 sell = False
 buy = True      # Start selling
-quantity = 0.00525
+quantity = 0.00605
 
 if __name__ == '__main__':
 
@@ -36,8 +36,6 @@ if __name__ == '__main__':
 
                     if (actualPrice < sellLimit) and not sell:
                         # sell
-                        sell = True
-                        buy = False
                         params = {
                                 "symbol": symbol,
                                 "side": 'SELL',
@@ -57,14 +55,43 @@ if __name__ == '__main__':
                             orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                             print(orderStatus)
                         print("************************************ sell price:", actualPrice)
+                        sell = True
+                        buy = False
                         time.sleep(59.0)
+                        print("1")
+                        time.sleep(59.0)
+                        print("2")
+                        time.sleep(59.0)
+                        print("3")
+                        time.sleep(59.0)
+                        print("4")
+                        time.sleep(59.0)
+                        print("5")
+                        time.sleep(59.0)
+                        print("6")
+                        time.sleep(59.0)
+                        print("7")
+                        time.sleep(59.0)
+                        print("8")
+                        time.sleep(59.0)
+                        print("9")
+                        time.sleep(59.0)
+                        print("10")
+                        time.sleep(59.0)
+                        print("11")
+                        time.sleep(59.0)
+                        print("12")
+                        time.sleep(59.0)
+                        print("13")
+                        time.sleep(59.0)
+                        print("14")
+                        time.sleep(59.0)
+                        print("15")
 
                     actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
 
                     if actualPrice > price and not buy:
                         # buy
-                        buy = True
-                        sell = False
                         params = {
                                 "symbol": symbol,
                                 "side": 'BUY',
@@ -84,6 +111,8 @@ if __name__ == '__main__':
                             orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                             print(orderStatus)
                         print("************************************ buy price:", actualPrice)
+                        buy = True
+                        sell = False
                         print("break")
                         break
                         # time.sleep(59.0)
