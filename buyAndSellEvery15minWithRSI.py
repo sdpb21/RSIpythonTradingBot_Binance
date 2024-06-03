@@ -11,9 +11,9 @@ number_of_candles = 200
 rsi_size = 2
 buy = True
 buyPrice = 0
-quantity = 0.00702
-rsiMin = 1.0
-rsiMax = 99.0
+quantity = 0.00529
+rsiMin = 50.0
+rsiMax = 97.97
 
 if __name__ == '__main__':
     spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
@@ -49,9 +49,8 @@ if __name__ == '__main__':
             minutes = datetime.datetime.now().minute
             boolMinutes = minutes == 0 or minutes == 15 or minutes == 30 or minutes == 45
 
-            if not buy and rsi < rsiMin and boolMinutes:
-                buy = True
-                buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+            if not buy and actualPrice < sellPrice and rsi < rsiMin and boolMinutes:
+                buyPrice = actualPrice
                 quantity = round(usd / buyPrice, 5)
                 params = {
                         "symbol": symbol,
@@ -72,11 +71,13 @@ if __name__ == '__main__':
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
                 print("************************************ buy price:", buyPrice)
+                buy = True
+                buyPrice = 0
                 # comprar
 
             if buy and buyPrice < actualPrice and rsi > rsiMax and boolMinutes:
                 # vender
-                actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+                sellPrice = actualPrice
                 params = {
                         "symbol": symbol,
                         "side": 'SELL',
@@ -100,7 +101,8 @@ if __name__ == '__main__':
                 usd = actualPrice * quantity
                 buy = False
 
-            time.sleep(59.0)
+            secs = datetime.datetime.now().second
+            time.sleep(60.0 - secs)
         except Exception as e:
             print("EXCEPTION 1: ", e)
             time.sleep(59.0)
