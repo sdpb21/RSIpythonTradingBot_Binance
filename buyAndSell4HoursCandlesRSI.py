@@ -12,9 +12,9 @@ rsi_size = 2
 buy = True
 buyPrice = 0
 sellPrice = 100000
-quantity = 0.00702
-rsiMin = 1.0
-rsiMax = 99.0
+quantity = 0.00605
+rsiMin = 20.0
+rsiMax = 96.0
 
 if __name__ == '__main__':
     spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
@@ -52,9 +52,8 @@ if __name__ == '__main__':
             boolHours = hours == 0 or hours == 4 or hours == 8 or hours == 12 or hours == 16 or hours == 20
             boolMinutes = minutes == 59 and boolHours
 
-            if not buy and rsi < rsiMin and boolMinutes and actualPrice < sellPrice:
-                buy = True
-                buyPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
+            if not buy and actualPrice < sellPrice and rsi < rsiMin and boolMinutes:
+                buyPrice = actualPrice
                 quantity = round(usd / buyPrice, 5)
                 params = {
                         "symbol": symbol,
@@ -75,6 +74,8 @@ if __name__ == '__main__':
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
                 print("************************************ buy price:", buyPrice)
+                buy = True
+                buyPrice = 0
                 # comprar
 
             if buy and buyPrice < actualPrice and rsi > rsiMax and boolMinutes:
@@ -104,7 +105,9 @@ if __name__ == '__main__':
                 usd = sellPrice * quantity
                 buy = False
 
-            time.sleep(59.0)
+            secs = datetime.datetime.now().second
+            time.sleep(60.0 - secs)
+            
         except Exception as e:
             print("EXCEPTION 1: ", e)
             time.sleep(59.0)
