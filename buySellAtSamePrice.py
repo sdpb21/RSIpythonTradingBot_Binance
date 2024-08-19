@@ -4,7 +4,7 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-price = 69000.0
+price = 59000.0
 sellLimit = price + 15.0
 startPrice = sellLimit + 10.0
 # buyLimit = price + 10.0
@@ -123,5 +123,7 @@ if __name__ == '__main__':
                     print("EXCEPTION 1: ", e)
                     time.sleep(59.0)
                     continue
+
+            print("stop buy and sell")
         
         time.sleep(1.0)
