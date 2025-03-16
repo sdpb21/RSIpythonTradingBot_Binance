@@ -11,7 +11,7 @@ number_of_candles = 200
 rsi_size = 2
 buy = True
 buyPrice = 0
-quantity = 0.00529
+quantity = 0.00539 + 0.00532
 rsiMin = 50.0
 rsiMax = 97.97
 
