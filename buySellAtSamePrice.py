@@ -4,13 +4,13 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-price = 59000.0
+price = 61420.0
 sellLimit = price + 15.0
 startPrice = sellLimit + 10.0
 # buyLimit = price + 10.0
 sell = False
 buy = True      # Start selling
-quantity = 0.00605
+quantity = 0.00546
 
 if __name__ == '__main__':
 
