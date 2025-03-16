@@ -12,8 +12,9 @@ rsi_size = 2
 buy = True
 buyPrice = 0
 sellPrice = 100000
-quantity = 0.00605
-rsiMin = 20.0
+# quantity = 0.00725
+quantity = 0.00630 + 0.00640
+rsiMin = 30.0
 rsiMax = 96.0
 
 if __name__ == '__main__':
@@ -107,7 +108,7 @@ if __name__ == '__main__':
 
             secs = datetime.datetime.now().second
             time.sleep(60.0 - secs)
-            
+
         except Exception as e:
             print("EXCEPTION 1: ", e)
             time.sleep(59.0)
