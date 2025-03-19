@@ -13,7 +13,8 @@ buy = True
 buyPrice = 0
 sellPrice = 100000
 # quantity = 0.00725
-quantity = 0.00608 + 0.00725
+quantity = 0.00609 + 0.00725
+quantity = round(quantity, 4)
 rsiMin = 5.0
 rsiMax = 96.0
 
@@ -55,7 +56,7 @@ if __name__ == '__main__':
 
             if not buy and actualPrice < sellPrice and rsi < rsiMin and boolMinutes:
                 buyPrice = actualPrice
-                quantity = round(usd / buyPrice, 5)
+                quantity = round(usd / buyPrice, 4)
                 params = {
                         "symbol": symbol,
                         "side": 'BUY',
