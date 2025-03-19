@@ -13,8 +13,8 @@ buy = True
 buyPrice = 0
 sellPrice = 100000
 # quantity = 0.00725
-quantity = 0.00630 + 0.00640
-rsiMin = 30.0
+quantity = 0.00608 + 0.00725
+rsiMin = 5.0
 rsiMax = 96.0
 
 if __name__ == '__main__':
