@@ -76,6 +76,8 @@ if __name__ == '__main__':
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
                 print("************************************ buy price:", buyPrice)
+                print("************************************ quantity:", quantity)
+                print("************************************ USD:", usd)
                 buy = True
                 buyPrice = 0
                 # comprar
@@ -105,6 +107,8 @@ if __name__ == '__main__':
                 
                 print("************************************ sell price:", sellPrice)
                 usd = sellPrice * quantity
+                print("************************************ quantity:", quantity)
+                print("************************************ USD:", usd)
                 buy = False
 
             secs = datetime.datetime.now().second
