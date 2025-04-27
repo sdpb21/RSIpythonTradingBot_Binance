@@ -12,7 +12,7 @@ minutes = 0
 hours = 0
 buyMinute = 0
 sellMinute = 15
-startHour = 19
+startHour = 8
 boolBuy = False
 boolSell = False
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
             if not buy and boolBuy:
 
                 buyPrice = actualPrice
-                quantity = round(usd / buyPrice, 5)
+                quantity = round(usd / buyPrice, 2)
                 print("************************************ buy price:", buyPrice)
                 print("************************************ quantity:", quantity)
                 print("************************************ USD:", usd)
