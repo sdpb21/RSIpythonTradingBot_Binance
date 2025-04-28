@@ -6,7 +6,7 @@ import time
 buy = False
 symbol = "SIGNUSDT"
 buyPrice = 0
-usd = 1000
+usd = 1153
 quantity = 0
 minutes = 0
 hours = 0
@@ -39,7 +39,7 @@ if __name__ == '__main__':
             if not buy and boolBuy:
 
                 buyPrice = actualPrice
-                quantity = round(usd / buyPrice, 2)
+                quantity = round(usd / buyPrice, 4)
                 print("************************************ buy price:", buyPrice)
                 print("************************************ quantity:", quantity)
                 print("************************************ USD:", usd)
