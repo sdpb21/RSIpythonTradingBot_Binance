@@ -4,15 +4,15 @@ import datetime
 import time
 
 buy = False
-symbol = "SIGNUSDT"
+symbol = "SXTUSDT"
 buyPrice = 0
-usd = 1153
+usd = 1289
 quantity = 0
 minutes = 0
 hours = 0
 buyMinute = 0
 sellMinute = 15
-startHour = 8
+startHour = 10
 boolBuy = False
 boolSell = False
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
             minutes = datetime.datetime.now().minute
             hours = datetime.datetime.now().hour
 
-            if hours == startHour:
+            if hours == startHour or buy:
                 actualPrice = float(spot_client.get_symbol_ticker(symbol=symbol).get('price'))
                 print(actualPrice, '\t', datetime.datetime.now())
             else:
@@ -39,7 +39,7 @@ if __name__ == '__main__':
             if not buy and boolBuy:
 
                 buyPrice = actualPrice
-                quantity = round(usd / buyPrice, 4)
+                quantity = round(usd / buyPrice, 0)
                 print("************************************ buy price:", buyPrice)
                 print("************************************ quantity:", quantity)
                 print("************************************ USD:", usd)
