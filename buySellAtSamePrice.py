@@ -1,3 +1,17 @@
+#########################################################################################
+# bot para comprar y vender al mismo precio, si el precio actual supera el startPrice   #
+# comienza otro bucle para monitorear el sellLimit, si el precio actual está por debajo #
+# del sellLimit, se coloca una orden de venta, se vende y se sigue monitoreando el      #
+# precio; si el precio baja y vuelve a subir por encima de el precio indicado en price  #
+# se coloca una orden de compra cerca al precio que se vendió anteriormente             #
+#########################################################################################
+
+#---startPrice--------------------------
+#
+#---sellLimit---------------------------
+#
+#---price-------------------------------
+
 import config
 from binance.client import Client
 import datetime
