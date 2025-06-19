@@ -18,13 +18,13 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-price = 61420.0
+price = 105140.0
 sellLimit = price + 15.0
 startPrice = sellLimit + 10.0
 # buyLimit = price + 10.0
 sell = False
 buy = True      # Start selling
-quantity = 0.00546
+quantity = 0.00009
 
 if __name__ == '__main__':
 
@@ -65,7 +65,7 @@ if __name__ == '__main__':
                         print(orderStatus)
                         while orderStatus != "FILLED":
                             print("waitin' to get FILLED")
-                            time.sleep(59.0)
+                            time.sleep(3.0)
                             orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                             print(orderStatus)
                         print("************************************ sell price:", actualPrice)
@@ -121,7 +121,7 @@ if __name__ == '__main__':
                         print(orderStatus)
                         while orderStatus != "FILLED":
                             print("waitin' to get FILLED")
-                            time.sleep(59.0)
+                            time.sleep(3.0)
                             orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                             print(orderStatus)
                         print("************************************ buy price:", actualPrice)
