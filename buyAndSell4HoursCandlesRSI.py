@@ -9,13 +9,13 @@ symbol = "BTCFDUSD"
 usd = 100
 number_of_candles = 200
 rsi_size = 2
-buy = True
-buyPrice = 0
-sellPrice = 100000
+buy = True      # start selling
+buyPrice = 0.0
+sellPrice = 1000000
 # quantity = 0.00725
-quantity = 0.00637 + 0.00725
+quantity = 0.00001
 # quantity = round(quantity, 5)
-rsiMin = 5.0
+rsiMin = 96.0
 rsiMax = 96.0
 
 if __name__ == '__main__':
@@ -57,6 +57,9 @@ if __name__ == '__main__':
             if not buy and actualPrice < sellPrice and rsi < rsiMin and boolMinutes:
                 buyPrice = actualPrice
                 quantity = round(usd / buyPrice, 5)
+                print("************************************ buy price:", buyPrice)
+                print("************************************ quantity:", quantity)
+                print("************************************ USD:", usd)
                 params = {
                         "symbol": symbol,
                         "side": 'BUY',
@@ -75,9 +78,7 @@ if __name__ == '__main__':
                     print("waitin' to get FILLED")
                     orderStatus = spot_client.get_order(symbol=symbol, orderId=orderID).get('status')
                     print(orderStatus)
-                print("************************************ buy price:", buyPrice)
-                print("************************************ quantity:", quantity)
-                print("************************************ USD:", usd)
+
                 buy = True
                 buyPrice = 0
                 # comprar
