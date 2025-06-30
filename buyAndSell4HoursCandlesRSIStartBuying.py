@@ -6,15 +6,15 @@ import datetime
 import time
 
 symbol = "BTCFDUSD"
-usd = 1138
+usd = 179
 number_of_candles = 200
 rsi_size = 2
 buy = False
 buyPrice = 0
-sellPrice = 100000
+sellPrice = 1000000
 # quantity = 0.00725
-rsiMin = 5.0
-rsiMax = 96.0
+rsiMin = 99.01
+rsiMax = 99.99
 
 if __name__ == '__main__':
     spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
@@ -49,8 +49,8 @@ if __name__ == '__main__':
             # time.sleep(0.3)
             minutes = datetime.datetime.now().minute
             hours = datetime.datetime.now().hour
-            boolHours = hours == 0 or hours == 4 or hours == 8 or hours == 12 or hours == 16 or hours == 20
-            boolMinutes = minutes == 59 and boolHours
+            boolHours = hours == 2 or hours == 4 or hours == 8 or hours == 12 or hours == 16 or hours == 20
+            boolMinutes = minutes == 30 and boolHours
 
             if not buy and actualPrice < sellPrice and rsi < rsiMin and boolMinutes:
                 buyPrice = actualPrice
