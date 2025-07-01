@@ -3,11 +3,11 @@ from binance.client import Client
 import datetime
 import time
 
-buy = False
+buy = True
 symbol = "SXTUSDT"
-buyPrice = 0
+buyPrice = 0.1805
 usd = 1289
-quantity = 0
+quantity = 7133.8
 minutes = 0
 hours = 0
 buyMinute = 0
