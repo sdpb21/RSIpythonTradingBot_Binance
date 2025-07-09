@@ -49,8 +49,8 @@ if __name__ == '__main__':
             # time.sleep(0.3)
             minutes = datetime.datetime.now().minute
             hours = datetime.datetime.now().hour
-            boolHours = hours == 2 or hours == 4 or hours == 8 or hours == 12 or hours == 16 or hours == 20
-            boolMinutes = minutes == 30 and boolHours
+            boolHours = hours == 0 or hours == 4 or hours == 8 or hours == 12 or hours == 16 or hours == 20
+            boolMinutes = minutes == 59 and boolHours
 
             if not buy and actualPrice < sellPrice and rsi < rsiMin and boolMinutes:
                 buyPrice = actualPrice
