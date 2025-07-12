@@ -13,10 +13,10 @@ buy = True      # start selling
 buyPrice = 0.0
 sellPrice = 1000000
 # quantity = 0.00725
-quantity = 0.01000
+quantity = 0.01005
 # quantity = round(quantity, 5)
-rsiMin = 99.5
-rsiMax = 99.5
+rsiMin = 99.6
+rsiMax = 99.6
 
 if __name__ == '__main__':
     spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
