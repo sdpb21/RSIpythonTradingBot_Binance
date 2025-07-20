@@ -5,15 +5,17 @@ import talib
 import datetime
 import time
 
-sell = False
+sell = True
 symbol = "BTCFDUSD"
 number_of_candles = 200
 rsi_size = 2
 rsiMax = 99.5
-quantity = 0.00001
+quantity = 0.00010
 usd = 0
+#########################
+sellPrice = 110500.23
 usd = sellPrice * quantity
-
+#########################
 if __name__ == '__main__':
 
     spot_client = Client(api_key=config.APY_KEY, api_secret=config.APY_SECRET_KEY, tld='com')
