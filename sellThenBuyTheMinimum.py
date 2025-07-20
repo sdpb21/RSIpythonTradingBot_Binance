@@ -99,7 +99,7 @@ if __name__ == '__main__':
         try:
 
             quantity = quantity + 0.00001
-            buyPrice = usd/quantity
+            buyPrice = round(usd/quantity, 2)
             # usd/actualPrice=quantity => usd=quantity*actualPrice => actualPrice=usd/quantity
             # quantity = round(usd / buyPrice, 5)
             print("************************************ buy price:", buyPrice)
