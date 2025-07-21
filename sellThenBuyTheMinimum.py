@@ -9,7 +9,7 @@ sell = False
 symbol = "BTCFDUSD"
 number_of_candles = 200
 rsi_size = 2
-rsiMax = 59.5
+rsiMax = 99.5
 quantity = 0.00010
 usd = 0
 #########################
