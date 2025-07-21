@@ -5,16 +5,16 @@ import talib
 import datetime
 import time
 
-sell = True
+sell = False
 symbol = "BTCFDUSD"
 number_of_candles = 200
 rsi_size = 2
-rsiMax = 99.5
+rsiMax = 59.5
 quantity = 0.00010
 usd = 0
 #########################
-sellPrice = 110500.23
-usd = sellPrice * quantity
+#sellPrice = 110500.23
+#usd = sellPrice * quantity
 #########################
 if __name__ == '__main__':
 
@@ -86,7 +86,7 @@ if __name__ == '__main__':
                 sell = True
 
             secs = datetime.datetime.now().second
-            time.sleep(58.0 - secs)
+            time.sleep(59.0 - secs)
 
         except Exception as e:
             print("EXCEPTION 1: ", e)
