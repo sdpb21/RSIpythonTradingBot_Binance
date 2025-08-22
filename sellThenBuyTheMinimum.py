@@ -12,6 +12,9 @@ rsi_size = 2
 rsiMax = 99.5
 quantity = 0.00010
 usd = 0
+candle_time = Client.KLINE_INTERVAL_15MINUTE
+# candle_time = Client.KLINE_INTERVAL_1HOUR
+# candle_time = Client.KLINE_INTERVAL_4HOUR
 #########################
 #sellPrice = 110500.23
 #usd = sellPrice * quantity
@@ -26,9 +29,7 @@ if __name__ == '__main__':
 
             candles = spot_client.get_historical_klines(
                 symbol=symbol,
-                # interval=Client.KLINE_INTERVAL_1HOUR,
-                # interval=Client.KLINE_INTERVAL_15MINUTE,
-                interval=Client.KLINE_INTERVAL_4HOUR,
+                interval=candle_time,
                 limit=number_of_candles
             )
 
@@ -51,8 +52,16 @@ if __name__ == '__main__':
 
             minutes = datetime.datetime.now().minute
             hours = datetime.datetime.now().hour
-            boolHours = hours == 0 or hours == 4 or hours == 8 or hours == 12 or hours == 16 or hours == 20
-            boolMinutes = minutes == 59 and boolHours
+
+            if candle_time == Client.KLINE_INTERVAL_15MINUTE:
+                boolMinutes = minutes == 0 or minutes == 15 or minutes == 30 or minutes == 45
+
+            if candle_time == Client.KLINE_INTERVAL_1HOUR:
+                boolMinutes = minutes == 59
+
+            if candle_time == Client.KLINE_INTERVAL_4HOUR:
+                boolHours = hours == 0 or hours == 4 or hours == 8 or hours == 12 or hours == 16 or hours == 20
+                boolMinutes = minutes == 59 and boolHours
 
             if not sell and rsi > rsiMax and boolMinutes:
                 # vender
