@@ -9,8 +9,8 @@ sell = False
 symbol = "BTCFDUSD"
 number_of_candles = 200
 rsi_size = 2
-rsiMax = 99.5
-quantity = 0.00010
+rsiMax = 79.5
+quantity = 0.00001
 usd = 0
 candle_time = Client.KLINE_INTERVAL_15MINUTE
 # candle_time = Client.KLINE_INTERVAL_1HOUR
@@ -94,8 +94,9 @@ if __name__ == '__main__':
                 print("************************************ USD:", usd)
                 sell = True
 
-            secs = datetime.datetime.now().second
-            time.sleep(59.0 - secs)
+            if not sell:
+                secs = datetime.datetime.now().second
+                time.sleep(59.0 - secs)
 
         except Exception as e:
             print("EXCEPTION 1: ", e)
